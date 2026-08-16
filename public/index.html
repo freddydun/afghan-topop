@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Afghan Top-Up — Send mobile credit to Afghanistan</title>
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body dir="ltr">
+  <div class="sandbox-banner" id="sandbox-banner" style="display:none">
+    🧪 Test mode — no real money is charged
+  </div>
+
+  <header>
+    <div class="brand" data-i18n="nav.brand">Afghan Top-Up</div>
+    <!-- Taalkiezer: nu alleen Engels, later vul je dit met de locales uit /locales
+         (bv. fa = Dari, ps = Pashto, de, fr, nl...) -->
+    <select id="lang-switch">
+      <option value="en">English</option>
+    </select>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <span class="badge" data-i18n="hero.badge">Trusted by Afghans worldwide</span>
+      <h1 data-i18n="hero.title">Send Top-Up to Afghanistan</h1>
+      <p class="subtitle" data-i18n="hero.subtitle">Send mobile credit to family &amp; friends. Instant delivery.</p>
+    </section>
+
+    <div class="card">
+      <label data-i18n="form.operator">Choose network</label>
+      <div class="operator-grid" id="operator-grid"><!-- gevuld via app.js --></div>
+
+      <label data-i18n="form.amount">Choose amount (AFN)</label>
+      <div class="amount-grid" id="amount-grid"><!-- gevuld via app.js --></div>
+
+      <label data-i18n="form.phoneLabel">Recipient phone number</label>
+      <p class="hint" data-i18n="form.phoneHint">Enter the Afghan mobile number to top up</p>
+      <div class="phone-row">
+        <span class="prefix">+93</span>
+        <input id="phone" type="tel" inputmode="numeric" placeholder="7XX XXX XXX" maxlength="9" />
+      </div>
+      <p class="error" id="form-error"></p>
+
+      <button class="submit" id="submit-btn" data-i18n="form.submit">Send Top-Up</button>
+    </div>
+
+    <footer data-i18n="footer.sandbox">Test mode — no real money is charged.</footer>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
