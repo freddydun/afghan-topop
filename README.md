@@ -71,9 +71,15 @@ Dit is een gewone Node/Express-app (geen speciale build nodig), dus dit draait d
 - **Render.com** of **Railway.app** — koppel je GitHub-repo, zet de environment variables uit `.env` in hun dashboard, klaar. Beide hebben een gratis/goedkope laag die prima is om mee te starten.
 - Vermijd Vercel voor dit project — dat is gebouwd voor "serverless" functies en werkt minder soepel met een lange-termijn Express-server zoals deze.
 
-## Belangrijk: wat nog handmatig werk is
+## Talen
 
-- **Vertalingen (Dari/Pashto/etc.):** de site is technisch al voorbereid op meertaligheid (`/public/locales/en.json`, RTL-switch in `app.js`/`style.css`), maar er staat nu alleen Engels in. Dit pakken we in de volgende stap op.
+De taalkeuze (rechtsboven op de site) ondersteunt nu Engels, Dari (`fa`) en Pashto (`ps`). Kies een taal en de hele pagina spiegelt automatisch naar RTL (rechts-naar-links) — inclusief lettertype (Noto Sans Arabic), tekstrichting, en de opmaak van het telefoonnummerveld (dat blijft bewust links-naar-rechts leesbaar, ook in een RTL-pagina, want telefoonnummers lees je altijd zo).
+
+**Belangrijke kanttekening:** de Dari- en Pashto-teksten in `public/locales/fa.json` en `public/locales/ps.json` zijn door mij vertaald op basis van mijn taalkennis, maar zijn niet nagekeken door een native speaker. Voordat dit live gaat naar echte klanten: laat een moedertaalspreker (je vriend, of iemand via Fiverr) deze twee bestanden doorlezen. Het zijn maar 15 korte zinnen per taal, dus dat kost iemand een paar minuten.
+
+Nieuwe taal toevoegen (bv. Duits of Nederlands, zoals we eerder bespraken): maak een nieuw bestand `public/locales/xx.json` naar het voorbeeld van `en.json`, zet `"_meta": {"dir": "ltr", "label": "Deutsch"}` bovenaan, en voeg een `<option value="xx">Deutsch</option>` toe in de taalkiezer in `index.html`. Geen verdere code-aanpassingen nodig.
+
+## Belangrijk: wat nog handmatig werk is
 - **Live FX-koers:** `AFN_TO_GBP` in `server.js` is nu een vaste waarde die je zelf up-to-date moet houden. Kan later vervangen worden door een live wisselkoers-API.
 - **Mislukte top-ups:** als Reloadly een top-up niet kan versturen (bv. verkeerd nummer), wordt dat nu alleen in de server-log en in `data/orders.json` gezet (`status: topup_failed`). Je moet dit zelf in de gaten houden en de klant handmatig terugbetalen/opnieuw proberen tot je dit geautomatiseerd hebt.
 - **Reloadly API-details:** `reloadly.js` is gebouwd op de publiek bekende structuur van hun Airtime API. Check bij het live zetten even [developers.reloadly.com](https://developers.reloadly.com/) om te bevestigen dat veldnamen nog kloppen — API's veranderen soms.

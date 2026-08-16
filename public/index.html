@@ -4,6 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Afghan Top-Up — Send mobile credit to Afghanistan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/style.css" />
 </head>
 <body dir="ltr">
@@ -13,11 +16,18 @@
 
   <header>
     <div class="brand" data-i18n="nav.brand">Afghan Top-Up</div>
-    <!-- Taalkiezer: nu alleen Engels, later vul je dit met de locales uit /locales
-         (bv. fa = Dari, ps = Pashto, de, fr, nl...) -->
-    <select id="lang-switch">
-      <option value="en">English</option>
-    </select>
+    <div class="header-controls">
+      <select id="currency-switch"><!-- gevuld via app.js met de valuta's uit /api/config --></select>
+      <!-- Taalkiezer: later vul je dit verder aan met extra locales uit /locales -->
+      <select id="lang-switch">
+        <option value="en">English</option>
+        <option value="fa">دری (Dari)</option>
+        <option value="ps">پښتو (Pashto)</option>
+        <option value="nl">Nederlands</option>
+        <option value="de">Deutsch</option>
+        <option value="fr">Français</option>
+      </select>
+    </div>
   </header>
 
   <main class="container">
@@ -25,11 +35,23 @@
       <span class="badge" data-i18n="hero.badge">Trusted by Afghans worldwide</span>
       <h1 data-i18n="hero.title">Send Top-Up to Afghanistan</h1>
       <p class="subtitle" data-i18n="hero.subtitle">Send mobile credit to family &amp; friends. Instant delivery.</p>
+      <span class="badge" data-i18n="hero.countryBadge">🇦🇫 Afghanistan</span>
+
+      <!-- Let op: dit zijn bewust GEEN nep-getallen (geen "180k+ verzonden" of nep-sterrenscore) —
+           die zouden misleidend zijn zolang er nog geen echte klanten/reviews zijn. Zodra er
+           echte cijfers zijn, kun je stat-num hieronder daarmee vervangen. -->
+      <div class="stats-row">
+        <div><div class="stat-num">5</div><div class="stat-label">networks</div></div>
+        <div class="divider"></div>
+        <div><div class="stat-num">&lt;60s</div><div class="stat-label">delivery*</div></div>
+        <div class="divider"></div>
+        <div><div class="stat-num">24/7</div><div class="stat-label">support</div></div>
+      </div>
     </section>
 
     <div class="card">
       <label data-i18n="form.operator">Choose network</label>
-      <div class="operator-grid" id="operator-grid"><!-- gevuld via app.js --></div>
+      <div class="operator-row" id="operator-row"><!-- gevuld via app.js --></div>
 
       <label data-i18n="form.amount">Choose amount (AFN)</label>
       <div class="amount-grid" id="amount-grid"><!-- gevuld via app.js --></div>
@@ -37,15 +59,24 @@
       <label data-i18n="form.phoneLabel">Recipient phone number</label>
       <p class="hint" data-i18n="form.phoneHint">Enter the Afghan mobile number to top up</p>
       <div class="phone-row">
-        <span class="prefix">+93</span>
+        <span class="prefix" id="phone-prefix">+93</span>
         <input id="phone" type="tel" inputmode="numeric" placeholder="7XX XXX XXX" maxlength="9" />
       </div>
       <p class="error" id="form-error"></p>
 
+      <div class="feature-badges">
+        <span class="feature-badge green">⚡ Instant delivery</span>
+        <span class="feature-badge blue">🛡️ Secure payment</span>
+        <span class="feature-badge red">🎧 24/7 support</span>
+      </div>
+
       <button class="submit" id="submit-btn" data-i18n="form.submit">Send Top-Up</button>
     </div>
 
-    <footer data-i18n="footer.sandbox">Test mode — no real money is charged.</footer>
+    <footer>
+      <div data-i18n="footer.sandbox">Test mode — no real money is charged.</div>
+      <div style="margin-top:6px; opacity:.7;" data-i18n="footer.deliveryNote">* typical processing time via our top-up provider, not a guarantee.</div>
+    </footer>
   </main>
 
   <script src="/app.js"></script>

@@ -1,0 +1,20 @@
+{
+  "_meta": { "dir": "ltr", "label": "Deutsch" },
+  "nav.brand": "Afghan Top-Up",
+  "hero.badge": "Vertraut von Afghanen weltweit",
+  "hero.title": "Guthaben nach Afghanistan senden",
+  "hero.subtitle": "Sende Handy-Guthaben an Familie und Freunde. Sofortige Lieferung.",
+  "hero.countryBadge": "🇦🇫 Afghanistan",
+  "form.operator": "Netzbetreiber wählen",
+  "form.amount": "Betrag wählen (AFN)",
+  "form.phoneLabel": "Telefonnummer des Empfängers",
+  "form.phoneHint": "Gib die afghanische Mobilnummer für das Guthaben ein",
+  "form.submit": "Guthaben senden",
+  "form.errorPhone": "Bitte gib eine gültige afghanische Nummer ein (7XXXXXXXX, ohne +93).",
+  "form.errorGeneric": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+  "footer.sandbox": "Testmodus — es wird kein echtes Geld abgebucht.",
+  "footer.deliveryNote": "* übliche Bearbeitungszeit über unseren Top-up-Anbieter, keine Garantie.",
+  "success.title": "Guthaben gesendet!",
+  "success.body": "Deine Zahlung wurde empfangen und das Guthaben ist unterwegs.",
+  "success.back": "Weiteres Guthaben senden"
+}

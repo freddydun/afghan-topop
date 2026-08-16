@@ -1,0 +1,20 @@
+{
+  "_meta": { "dir": "ltr", "label": "Français" },
+  "nav.brand": "Afghan Top-Up",
+  "hero.badge": "La confiance des Afghans dans le monde entier",
+  "hero.title": "Envoyer du crédit vers l'Afghanistan",
+  "hero.subtitle": "Envoyez du crédit mobile à votre famille et vos amis. Livraison instantanée.",
+  "hero.countryBadge": "🇦🇫 Afghanistan",
+  "form.operator": "Choisir le réseau",
+  "form.amount": "Choisir le montant (AFN)",
+  "form.phoneLabel": "Numéro de téléphone du destinataire",
+  "form.phoneHint": "Saisissez le numéro mobile afghan à recharger",
+  "form.submit": "Envoyer le crédit",
+  "form.errorPhone": "Veuillez saisir un numéro afghan valide (7XXXXXXXX, sans +93).",
+  "form.errorGeneric": "Une erreur est survenue. Veuillez réessayer.",
+  "footer.sandbox": "Mode test — aucun argent réel n'est débité.",
+  "footer.deliveryNote": "* délai de traitement habituel via notre fournisseur de recharge, non garanti.",
+  "success.title": "Crédit envoyé !",
+  "success.body": "Votre paiement a été reçu et le crédit est en cours d'envoi.",
+  "success.back": "Envoyer un autre crédit"
+}

@@ -1,0 +1,20 @@
+{
+  "_meta": { "dir": "ltr", "label": "Nederlands" },
+  "nav.brand": "Afghan Top-Up",
+  "hero.badge": "Vertrouwd door Afghanen wereldwijd",
+  "hero.title": "Stuur een top-up naar Afghanistan",
+  "hero.subtitle": "Stuur beltegoed naar familie en vrienden. Directe levering.",
+  "hero.countryBadge": "🇦🇫 Afghanistan",
+  "form.operator": "Kies netwerk",
+  "form.amount": "Kies bedrag (AFN)",
+  "form.phoneLabel": "Telefoonnummer ontvanger",
+  "form.phoneHint": "Vul het Afghaanse mobiele nummer in dat je wil opwaarderen",
+  "form.submit": "Verstuur top-up",
+  "form.errorPhone": "Vul een geldig Afghaans nummer in (7XXXXXXXX, zonder +93).",
+  "form.errorGeneric": "Er ging iets mis. Probeer het opnieuw.",
+  "footer.sandbox": "Testmodus — er wordt geen echt geld afgeschreven.",
+  "footer.deliveryNote": "* gebruikelijke verwerkingstijd via onze top-up-provider, geen garantie.",
+  "success.title": "Top-up verstuurd!",
+  "success.body": "Je betaling is ontvangen en de top-up is onderweg.",
+  "success.back": "Stuur nog een top-up"
+}

@@ -4,6 +4,7 @@
   "hero.badge": "Trusted by Afghans worldwide",
   "hero.title": "Send Top-Up to Afghanistan",
   "hero.subtitle": "Send mobile credit to family & friends. Instant delivery.",
+  "hero.countryBadge": "🇦🇫 Afghanistan",
   "form.operator": "Choose network",
   "form.amount": "Choose amount (AFN)",
   "form.phoneLabel": "Recipient phone number",
@@ -12,6 +13,7 @@
   "form.errorPhone": "Please enter a valid Afghan number (7XXXXXXXX, without +93).",
   "form.errorGeneric": "Something went wrong. Please try again.",
   "footer.sandbox": "Test mode — no real money is charged.",
+  "footer.deliveryNote": "* typical processing time via our top-up provider, not a guarantee.",
   "success.title": "Top-up sent!",
   "success.body": "Your payment was received and the top-up is on its way.",
   "success.back": "Send another top-up"

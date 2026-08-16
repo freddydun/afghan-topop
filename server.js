@@ -16,10 +16,16 @@ const stripe = process.env.STRIPE_SECRET_KEY
   ? new Stripe(process.env.STRIPE_SECRET_KEY)
   : null;
 
-// MVP: vaste omrekenkoers AFN -> GBP. sim.af gebruikt een live FX-rate;
-// dat kun je later toevoegen (bv. via exchangerate.host), voor nu is een vaste
-// koers genoeg om te testen en simpel te houden.
-const AFN_TO_GBP = 0.0159; // ~ 1 AFN = £0.0159 (pas aan naar de actuele koers)
+// MVP: vaste omrekenkoersen AFN -> valuta. sim.af gebruikt een live FX-rate;
+// dat kun je later toevoegen (bv. via exchangerate.host), voor nu zijn vaste
+// koersen genoeg om te testen en simpel te houden. Pas aan naar actuele koersen
+// voordat je live gaat.
+const CURRENCIES = {
+  gbp: { rate: 0.0159, symbol: '£', label: 'GBP' }, // 1 AFN = £0.0159
+  eur: { rate: 0.0186, symbol: '€', label: 'EUR' }, // 1 AFN = €0.0186
+  usd: { rate: 0.0201, symbol: '$', label: 'USD' }  // 1 AFN = $0.0201
+};
+const DEFAULT_CURRENCY = 'gbp';
 
 // --- Stripe webhook heeft de RAW body nodig, dus dit moet VOOR express.json() ---
 app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
@@ -84,7 +90,8 @@ app.get('/api/config', (req, res) => {
     publishableKey: process.env.STRIPE_PUBLISHABLE_KEY || null,
     operators: OPERATORS.map(({ code, name, logo }) => ({ code, name, logo })),
     amountsAfn: AMOUNTS_AFN,
-    afnToGbp: AFN_TO_GBP,
+    currencies: CURRENCIES,
+    defaultCurrency: DEFAULT_CURRENCY,
     sandbox: reloadly.IS_SANDBOX
   });
 });
@@ -94,17 +101,20 @@ app.post('/api/create-checkout-session', async (req, res) => {
     return res.status(500).json({ error: 'Stripe is nog niet geconfigureerd (vul STRIPE_SECRET_KEY in .env in).' });
   }
 
-  const { operatorCode, amountAfn, phone } = req.body;
+  const { operatorCode, amountAfn, phone, currency } = req.body;
   const operator = getOperatorByCode(operatorCode);
+  const currencyCode = (currency || DEFAULT_CURRENCY).toLowerCase();
+  const currencyInfo = CURRENCIES[currencyCode];
 
   if (!operator) return res.status(400).json({ error: 'Onbekende operator.' });
+  if (!currencyInfo) return res.status(400).json({ error: 'Onbekende valuta.' });
   if (!amountAfn || Number(amountAfn) <= 0) return res.status(400).json({ error: 'Ongeldig bedrag.' });
   if (!phone || !/^7\d{8}$/.test(phone)) {
     return res.status(400).json({ error: 'Vul een geldig Afghaans nummer in (7XXXXXXXX, zonder +93).' });
   }
 
-  const amountGbp = Math.max(1, Number(amountAfn) * AFN_TO_GBP);
-  const amountInCents = Math.round(amountGbp * 100);
+  const chargeAmount = Math.max(1, Number(amountAfn) * currencyInfo.rate);
+  const amountInCents = Math.round(chargeAmount * 100);
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -113,7 +123,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
       line_items: [
         {
           price_data: {
-            currency: 'gbp',
+            currency: currencyCode,
             product_data: {
               name: `${operator.name} Afghanistan Top-Up — ${amountAfn} AFN`
             },
@@ -136,7 +146,8 @@ app.post('/api/create-checkout-session', async (req, res) => {
       operatorCode,
       amountAfn,
       phone: `93${phone}`,
-      amountGbp: amountGbp.toFixed(2),
+      chargeAmount: chargeAmount.toFixed(2),
+      currency: currencyCode,
       status: 'awaiting_payment'
     });
 
