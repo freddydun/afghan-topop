@@ -1,21 +1,21 @@
 /**
  * De 5 Afghaanse operators die we ondersteunen.
  *
- * BELANGRIJK: operatorId is een placeholder (null). Reloadly kent elke operator
- * een eigen numeriek ID toe, en dat ID verschilt tussen hun sandbox- en live-omgeving.
- * Je haalt de echte ID's op zodra je Reloadly-sandbox-keys hebt door:
+ * operatorId's zijn nu ECHTE Reloadly SANDBOX-ID's, opgehaald via /api/debug/operators
+ * op [datum invullen]. Let op: zodra je naar LIVE overschakelt (RELOADLY_ENV=live),
+ * kunnen deze ID's anders zijn — haal ze dan opnieuw op via diezelfde debug-URL nadat
+ * je live-keys in Render staan, en vervang de waarden hieronder.
  *
- *   npm run fetch-operators
- *
- * Dat script (scripts/fetch-operators.js) zoekt automatisch alle Afghaanse operators op
- * en print de ID's die je hieronder moet invullen.
+ * Reloadly heeft trouwens ook aparte "Data"-varianten per operator (bv. voor losse
+ * databundels i.p.v. gewoon beltegoed) — die IDs kwamen ook mee in de debug-lijst,
+ * voor als je later een apart "databundel"-product wil toevoegen naast top-up.
  */
 const OPERATORS = [
-  { code: 'mtn', name: 'MTN', country: 'AF', operatorId: null, logo: '/img/mtn.svg' },
-  { code: 'roshan', name: 'Roshan', country: 'AF', operatorId: null, logo: '/img/roshan.svg' },
-  { code: 'etisalat', name: 'Etisalat', country: 'AF', operatorId: null, logo: '/img/etisalat.svg' },
-  { code: 'awcc', name: 'AWCC', country: 'AF', operatorId: null, logo: '/img/awcc.svg' },
-  { code: 'salaam', name: 'Salaam', country: 'AF', operatorId: null, logo: '/img/salaam.svg' }
+  { code: 'mtn', name: 'MTN', country: 'AF', operatorId: 2, logo: '/img/mtn.svg' },
+  { code: 'roshan', name: 'Roshan', country: 'AF', operatorId: 4, logo: '/img/roshan.svg' },
+  { code: 'etisalat', name: 'Etisalat', country: 'AF', operatorId: 3, logo: '/img/etisalat.svg' },
+  { code: 'awcc', name: 'AWCC', country: 'AF', operatorId: 1, logo: '/img/awcc.svg' },
+  { code: 'salaam', name: 'Salaam', country: 'AF', operatorId: 706, logo: '/img/salaam.svg' }
 ];
 
 // Standaard AFN-bedragen die we als knoppen tonen (net als bij sim.af: 250 / 500 / 1000 etc.)
