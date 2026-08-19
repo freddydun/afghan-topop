@@ -164,6 +164,23 @@ app.get('/api/orders', (req, res) => {
   res.json(orders.readAll());
 });
 
+// TIJDELIJKE handige pagina: laat de echte Reloadly operator-ID's voor Afghanistan
+// zien door simpelweg deze URL in je browser te openen (geen Terminal/lokaal nodig).
+// Werkt zodra RELOADLY_CLIENT_ID/SECRET in Render's Environment staan.
+// Haal deze route later weg als je live gaat, puur voor eigen gebruik nu.
+app.get('/api/debug/operators', async (req, res) => {
+  try {
+    const operators = await reloadly.listOperatorsForCountry('AF');
+    const simplified = operators.map((op) => ({ name: op.name, operatorId: op.operatorId }));
+    res.json({ mode: reloadly.IS_SANDBOX ? 'sandbox' : 'live', operators: simplified });
+  } catch (err) {
+    res.status(500).json({
+      error: 'Kon operators niet ophalen. Check of RELOADLY_CLIENT_ID/SECRET goed in Render staan.',
+      details: err.response ? err.response.data : err.message
+    });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`\n✅ Server draait op ${BASE_URL}`);
   console.log(`   Reloadly-modus: ${reloadly.IS_SANDBOX ? 'SANDBOX (geen echt geld)' : '⚠️ LIVE'}`);
