@@ -45,4 +45,8 @@ function updateStatus(sessionId, status, extra = {}) {
   return orders[idx];
 }
 
-module.exports = { readAll, save, updateStatus };
+function getBySessionId(sessionId) {
+  return readAll().find((o) => o.sessionId === sessionId);
+}
+
+module.exports = { readAll, save, updateStatus, getBySessionId };

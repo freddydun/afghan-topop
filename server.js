@@ -5,6 +5,7 @@ const path = require('path');
 const { OPERATORS, AMOUNTS_AFN, getOperatorByCode } = require('./operators');
 const reloadly = require('./reloadly');
 const orders = require('./orders');
+const { sendAlert } = require('./alerts');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -49,6 +50,16 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
     const session = event.data.object;
     const { operatorCode, phone, amountAfn } = session.metadata || {};
 
+    // Bescherming tegen dubbele levering: als Stripe deze gebeurtenis per ongeluk
+    // twee keer stuurt (komt af en toe voor), willen we niet twee keer top-up sturen
+    // voor dezelfde betaling. We slaan daarom bij elke sessie de status op, en
+    // stoppen hier meteen als die sessie al (succesvol of mislukt) is afgehandeld.
+    const existing = orders.getBySessionId(session.id);
+    if (existing && existing.status !== 'awaiting_payment') {
+      console.log(`Sessie ${session.id} was al afgehandeld (status: ${existing.status}) — dubbele webhook genegeerd.`);
+      return res.json({ received: true });
+    }
+
     try {
       const operator = getOperatorByCode(operatorCode);
       if (!operator || operator.operatorId === null) {
@@ -68,13 +79,33 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
       orders.updateStatus(session.id, 'topup_sent', { reloadlyTransactionId: result.transactionId });
       console.log(`Top-up verstuurd voor sessie ${session.id}:`, result.transactionId);
     } catch (err) {
-      orders.updateStatus(session.id, 'topup_failed', {
-        error: err.response ? JSON.stringify(err.response.data) : err.message
-      });
-      console.error('Top-up versturen mislukt:', err.response ? err.response.data : err.message);
-      // TODO: hier kun je jezelf een e-mail/Slack/WhatsApp-melding laten sturen
-      // zodat je een mislukte top-up snel handmatig kan afhandelen en de klant
-      // niet met een betaalde-maar-niet-geleverde top-up blijft zitten.
+      const reason = err.response ? JSON.stringify(err.response.data) : err.message;
+      console.error('Top-up versturen mislukt:', reason);
+
+      // De klant heeft al betaald maar de top-up is niet aangekomen — dat NOOIT
+      // stilletjes laten liggen. Eerst proberen automatisch terug te betalen,
+      // en in alle gevallen jezelf een pushmelding sturen zodat je het meteen weet.
+      try {
+        if (stripe && session.payment_intent) {
+          await stripe.refunds.create({ payment_intent: session.payment_intent });
+          orders.updateStatus(session.id, 'refunded_after_failure', { error: reason });
+          await sendAlert(
+            `Top-up MISLUKT voor sessie ${session.id} (${operatorCode}, ${amountAfn} AFN). ` +
+            `Klant is automatisch terugbetaald. Reden: ${reason}`
+          );
+        } else {
+          throw new Error('Geen payment_intent gevonden, kon niet automatisch terugbetalen.');
+        }
+      } catch (refundErr) {
+        // Terugbetalen mislukte ook — dit is het meest urgente scenario: klant heeft
+        // betaald, geen top-up gekregen, EN geen automatische terugbetaling gehad.
+        orders.updateStatus(session.id, 'topup_failed', { error: reason, refundError: refundErr.message });
+        await sendAlert(
+          `‼️ URGENT: Top-up MISLUKT voor sessie ${session.id} EN automatisch terugbetalen is OOK mislukt. ` +
+          `Klant heeft betaald zonder top-up of terugbetaling — dit met de hand oplossen. ` +
+          `Top-up fout: ${reason} | Terugbetaal fout: ${refundErr.message}`
+        );
+      }
     }
   }
 
