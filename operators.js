@@ -11,7 +11,7 @@
  * voor als je later een apart "databundel"-product wil toevoegen naast top-up.
  */
 const OPERATORS = [
-  { code: 'mtn', name: 'MTN', country: 'AF', operatorId: 2, logo: '/img/mtn.svg' },
+  { code: 'mtn', name: 'MTN', country: 'AF', operatorId: 999999, logo: '/img/mtn.svg' },
   { code: 'roshan', name: 'Roshan', country: 'AF', operatorId: 4, logo: '/img/roshan.svg' },
   { code: 'etisalat', name: 'Etisalat', country: 'AF', operatorId: 3, logo: '/img/etisalat.svg' },
   { code: 'awcc', name: 'AWCC', country: 'AF', operatorId: 1, logo: '/img/awcc.svg' },
